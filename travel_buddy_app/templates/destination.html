@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Travel Buddy - Destination{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <table>
+            <th><h1 class="mt-3">{{trip.destination}}</h1></th>
+            <tr>
+                <td>Planned By: {{trip.owner_user.name}}</td>
+            </tr>
+            <tr>
+                <td>Description: {{trip.plan}}</td>
+            </tr>
+            <tr>
+                <td>Travel Date From: {{trip.start_date}}</td>
+            </tr>
+            <tr>
+                <td>Travel Date From: {{trip.end_date}}</td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td><h3 class="mt-3">Other users joining the trip:</h3></td>
+            </tr>
+            {% for user in trip.user.all %}
+                <tr><td>{{user.name}}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block library %}
+{% endblock %}

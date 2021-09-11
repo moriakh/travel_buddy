@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Travel Buddy{% endblock %}
+
+{% block content %}
+<h1>Hello {{request.session.user.username}}!</h1>
+<div class="container">
+    <div class="row mt-3">
+        <h3>Your Trip Schedules</h3>
+        <table border="3">
+            <tr>
+                <th>Destination</th>
+                <th>Travel Start Date</th>
+                <th>Travel End Date</th>
+                <th>Plan</th>
+            </tr>
+            {% for trip in user_trips.all %}
+            <tr>
+                <td><a href="/travels/destination/{{trip.id}}">{{trip.destination}}</a></td>
+                <td>{{trip.start_date}}</td>
+                <td>{{trip.end_date}}</td>
+                <td>{{trip.plan}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row mt-3">
+        <h3>Other User's Travel Plans</h3>
+        <table border="3">
+            <tr>
+                <th>Name</th>
+                <th>Destination</th>
+                <th>Travel Start Date</th>
+                <th>Travel End Date</th>
+                <th>Do you want to Join?</th>
+            </tr>
+            {% for trip in trips %}
+            <tr>
+                <td>{{trip.owner_user.name}}</td>
+                <td><a href="/travels/destination/{{trip.id}}">{{trip.destination}}</a></td>
+                <td>{{trip.start_date}}</td>
+                <td>{{trip.end_date}}</td>
+                <td><a href="/travels/join/{{trip.id}}">Join!</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="text-end mt-5"><h2><a href="travels/add">Add Travel Plan</a></h2></div>
+</div>
+{% endblock %}
+
+{% block library %}
+{% endblock %}
