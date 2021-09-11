@@ -25,7 +25,8 @@ def login(request):
 
                 request.session['user'] = user
                 messages.success(request, "Login Successful.")
-                return render(request, 'index.html')
+                # return render(request, 'index.html')
+                return redirect('/')
             else:
                 messages.error(request, "Email or password is wrong")
         else:

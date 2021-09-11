@@ -34,6 +34,7 @@ def destination(request, trip_id):
 def delete(request, trip_id):
     trip = Trips.objects.get(id = trip_id)
     trip.delete()
+    messages.warning(request, 'Trip deleted')
     return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
@@ -41,6 +42,7 @@ def cancel(request, trip_id):
     current_user = Users.objects.get(id = int(request.session['user']['id']))
     trip = Trips.objects.get(id = trip_id)
     current_user.trips.remove(trip)
+    messages.warning(request, 'Joining trip canceled')
     return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
