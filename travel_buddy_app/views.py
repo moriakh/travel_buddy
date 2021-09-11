@@ -1,37 +1,41 @@
+from pdb import set_trace
 from django.contrib import messages
 from django.shortcuts import redirect, render
 import bcrypt
 from .decorators import login_required
 from .models import Users, Trips
+from django.db.models import Q
 import datetime
 
-# @login_required
+@login_required
 def index(request):
     current_user = Users.objects.get(id = int(request.session['user']['id']))
     context = {
-        'users' : Users.objects.all(),
-        'own_trips' : current_user.own_trips,
         'user_trips' : Trips.objects.filter(user__id = current_user.id),
-        'trips' : Trips.objects.exclude(owner_user__id = current_user.id) | Trips.objects.exclude(user__id = current_user.id),
+        'trips' : Trips.objects.filter(~Q(user__id = current_user.id)),
     }
-
     return render(request, 'index.html', context)
 
-# @login_required
+@login_required
 def destination(request, trip_id):
     current_user = Users.objects.get(id = int(request.session['user']['id']))
     trip = Trips.objects.get(id = trip_id)
+    '''travellers = trip.user.all()
+    travellers_id = [traveller.id for traveller in travellers]
+    not_owner = [traveller for traveller in travellers if current_user.id not in travellers_id]'''
+    travellers = trip.user.all().exclude(id = trip.owner_user.id)
 
     context = {
-        'trip' : trip
+        'trip' : trip,
+        'travellers' : travellers
     }
     return render(request, 'destination.html', context)
 
-# @login_required
+@login_required
 def add_view(request):
     return render(request, 'add_trip.html')
 
-# @login_required
+@login_required
 def add_trip(request):
     if request.method == "POST":
 
@@ -52,11 +56,7 @@ def add_trip(request):
     else:
         return redirect(request.META.get('HTTP_REFERER'))
 
-# @login_required
-def travels(request, user_id):
-    return redirect(request.META.get('HTTP_REFERER'))
-
-# @login_required
+@login_required
 def join_trip(request, trip_id):
     user = Users.objects.get(id = int(request.session['user']['id']))
     user.trips.add(Trips.objects.get(id = trip_id))
