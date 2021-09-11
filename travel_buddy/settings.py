@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+from .env import env
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,6 +26,9 @@ SECRET_KEY = 'django-insecure-v1sn2ve)$!&_0kr-r0@g3mbklwhazqluh+ea3q*!qqz^h*iv4f
 DEBUG = True
 
 ALLOWED_HOSTS = []
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+if env == 'cloud':
+    ALLOWED_HOSTS = ['137.184.84.45']
 
 
 # Application definition
