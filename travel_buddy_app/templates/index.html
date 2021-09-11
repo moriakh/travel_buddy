@@ -13,6 +13,7 @@
                 <th>Travel Start Date</th>
                 <th>Travel End Date</th>
                 <th>Plan</th>
+                <th>Action</th>
             </tr>
             {% for trip in user_trips.all %}
             <tr>
@@ -20,6 +21,7 @@
                 <td>{{trip.start_date}}</td>
                 <td>{{trip.end_date}}</td>
                 <td>{{trip.plan}}</td>
+                <td><a href="/cancel/{{trip.id}}">Cancel</a> ¦ {% if trip.owner_user.id == request.session.user.id %} <a href="/delete/{{trip.id}}">Delete</a> {% endif %}</td>
             </tr>
             {% endfor %}
         </table>

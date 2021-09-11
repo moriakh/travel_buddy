@@ -18,7 +18,6 @@ def index(request):
 
 @login_required
 def destination(request, trip_id):
-    current_user = Users.objects.get(id = int(request.session['user']['id']))
     trip = Trips.objects.get(id = trip_id)
     '''travellers = trip.user.all()
     travellers_id = [traveller.id for traveller in travellers]
@@ -30,6 +29,19 @@ def destination(request, trip_id):
         'travellers' : travellers
     }
     return render(request, 'destination.html', context)
+
+@login_required
+def delete(request, trip_id):
+    trip = Trips.objects.get(id = trip_id)
+    trip.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def cancel(request, trip_id):
+    current_user = Users.objects.get(id = int(request.session['user']['id']))
+    trip = Trips.objects.get(id = trip_id)
+    current_user.trips.remove(trip)
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
 def add_view(request):

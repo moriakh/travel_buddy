@@ -9,5 +9,7 @@ urlpatterns = [
     path('travels/add', views.add_view, name = "add_view"),
     path('travels/join/<int:trip_id>', views.join_trip, name = "join_trip"),
     path('login', auth.login, name = "login"),
+    path('cancel/<int:trip_id>', views.cancel, name = "cancel"),
+    path('delete/<int:trip_id>', views.delete, name = "delete"),
     path('logout', auth.logout, name = "logout")
 ]
